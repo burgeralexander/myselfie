@@ -12273,6 +12273,8 @@ int main(int argc, char** argv) {
   init_system();
   init_target();
   init_kernel();
+  
+  printf("%s: This is Alexander Burger's Selfie!", selfie_name);
 
   exit_code = selfie(0);
 
