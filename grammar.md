@@ -22,6 +22,8 @@ character  = "'" printable_character "'" .
 string     = """ { printable_character } """ .
 
 identifier = letter { letter | digit | "_" } .
+
+hex_literal = "0x" digit | hex_letter { digit | hex_letter } .
 ```
 
 and:
@@ -30,6 +32,8 @@ and:
 digit  = "0" | ... | "9" .
 
 letter = "a" | ... | "z" | "A" | ... | "Z" .
+
+hex_letter = "A" | "B" | "C" | "D" | "E" | "F" | "a" | "b" | "c" | "d" | "e" | "f" .
 ```
 
 C\* Grammar:

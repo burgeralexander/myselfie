@@ -2891,6 +2891,29 @@ uint64_t atoi(char* s) {
   // load character (one byte) at index i in s from memory requires
   // bit shifting since memory access can only be done at word granularity
   c = load_character(s, i);
+  
+  if (c == 'x') {
+    i = i + 1;
+    c = load_character(s, i);
+    
+    while (c != 0) {
+      if ( c >= 'A')
+        if (c <= 'F')
+          c = c - 55;
+      if ( c >= 'a')
+        if (c <= 'f')
+          c = c - 67;
+      if ( c >= '0')
+        if (c <= '9')
+          c = c - '0';
+      
+      n = n * 16 + c;
+      i = i + 1;
+      c = load_character(s, i);
+    }
+  
+    return n;
+  }
 
   // only used by console argument scanner
   if (c == '-') {
@@ -3717,6 +3740,15 @@ uint64_t identifier_or_keyword() {
     return SYM_IDENTIFIER;
 }
 
+uint64_t is_hex(){
+  if (is_digit(character))
+    return 1;
+  else if (is_letter(character))
+    return 1;
+  else
+    return 0;
+}
+
 void get_symbol() {
   uint64_t i;
 
@@ -3758,12 +3790,6 @@ void get_symbol() {
 
         symbol = identifier_or_keyword();
       } else if (is_digit(character)) {
-        if (character == '0') {
-          // 0 is 0, not 00, 000, etc.
-          get_character();
-
-          literal = 0;
-        } else {
           // accommodate integer and null for termination
           integer = string_alloc(MAX_INTEGER_LENGTH);
 
@@ -3785,7 +3811,35 @@ void get_symbol() {
 
             get_character();
           }
-
+          
+          if (character == 'x') {
+            if (load_character(integer, 0) == '0') {
+              store_character(integer, 0, character);
+              
+              get_character();
+            }
+            
+            while (is_hex()) {
+              if (i-1 >= 16) {
+                if (integer_is_signed) { 
+                  syntax_error_message("signed integer out of target bound");
+                  
+                  exit(EXITCODE_SCANNERERROR);
+                } else { 
+                  syntax_error_message("unsigned integer out of target bound");
+                  
+                  exit(EXITCODE_SCANNERERROR);
+                }
+              }
+              
+              store_character(integer, i, character);
+              
+              i = i + 1;
+              
+              get_character();
+            }
+          }
+          
           store_character(integer, i, 0); // null-terminated string
 
           literal = atoi(integer);
@@ -3801,7 +3855,7 @@ void get_symbol() {
 
             exit(EXITCODE_SCANNERERROR);
           }
-        }
+        
 
         symbol = SYM_INTEGER;
       } else if (character == CHAR_SINGLEQUOTE) {
