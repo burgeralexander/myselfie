@@ -456,14 +456,16 @@ uint64_t SYM_LT           = 25; // <
 uint64_t SYM_LEQ          = 26; // <=
 uint64_t SYM_GT           = 27; // >
 uint64_t SYM_GEQ          = 28; // >=
-uint64_t SYM_ELLIPSIS     = 29; // ...
+uint64_t SYM_BITWISE_SHIFT_LT = 29; // <<
+uint64_t SYM_BITWISE_SHIFT_GT = 30; // >> 
+uint64_t SYM_ELLIPSIS     = 31; // ...
 
 // symbols for bootstrapping
 
-uint64_t SYM_INT      = 30; // int
-uint64_t SYM_CHAR     = 31; // char
-uint64_t SYM_UNSIGNED = 32; // unsigned
-uint64_t SYM_CONST    = 33; // const
+uint64_t SYM_INT      = 32; // int
+uint64_t SYM_CHAR     = 33; // char
+uint64_t SYM_UNSIGNED = 34; // unsigned
+uint64_t SYM_CONST    = 35; // const
 
 uint64_t* SYMBOLS; // strings representing symbols
 
@@ -532,6 +534,8 @@ void init_scanner () {
   *(SYMBOLS + SYM_LEQ)          = (uint64_t) "<=";
   *(SYMBOLS + SYM_GT)           = (uint64_t) ">";
   *(SYMBOLS + SYM_GEQ)          = (uint64_t) ">=";
+  *(SYMBOLS + SYM_BITWISE_SHIFT_LT) = (uint64_t) "<<";
+  *(SYMBOLS + SYM_BITWISE_SHIFT_GT) = (uint64_t) ">>";
   *(SYMBOLS + SYM_ELLIPSIS)     = (uint64_t) "...";
 
   *(SYMBOLS + SYM_INT)      = (uint64_t) "int";
@@ -3983,6 +3987,10 @@ void get_symbol() {
           get_character();
 
           symbol = SYM_LEQ;
+        } else if (character == CHAR_LT) {
+          get_character();
+
+          symbol = SYM_BITWISE_SHIFT_LT;
         } else
           symbol = SYM_LT;
       } else if (character == CHAR_GT) {
@@ -3992,6 +4000,10 @@ void get_symbol() {
           get_character();
 
           symbol = SYM_GEQ;
+        } else if (character == CHAR_GT) {
+          get_character();
+          
+          symbol = SYM_BITWISE_SHIFT_GT;
         } else
           symbol = SYM_GT;
       } else if (character == CHAR_DOT) {
@@ -4267,6 +4279,10 @@ uint64_t is_comparison() {
   else if (symbol == SYM_LT)
     return 1;
   else if (symbol == SYM_GT)
+    return 1;
+  else if (symbol == SYM_BITWISE_SHIFT_LT)
+    return 1;
+  else if (symbol == SYM_BITWISE_SHIFT_GT)
     return 1;
   else if (symbol == SYM_LEQ)
     return 1;
