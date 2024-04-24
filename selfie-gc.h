@@ -2030,7 +2030,7 @@ uint64_t CONTEXTENTRIES = 32;
 
 uint64_t* allocate_context(); // declaration avoids warning in the Boehm garbage collector
 
-uint64_t* allocate_context() {
+uint64_t* allocate_context_deleted() {
   // assert: sizeof(uint64_t) == sizeof(uint64_t*)
   return smalloc(CONTEXTENTRIES * sizeof(uint64_t));
 }
@@ -10890,7 +10890,7 @@ uint64_t is_gc_enabled(uint64_t* context) {
   return get_gc_enabled_gc(context) == GC_ENABLED;
 }
 
-void gc_init(uint64_t* context) {
+void gc_init_deleted(uint64_t* context) {
   gc_init_selfie(context);
 }
 
@@ -11022,7 +11022,7 @@ uint64_t* reuse_memory(uint64_t* context, uint64_t size) {
   return (uint64_t*) 0;
 }
 
-uint64_t* allocate_memory(uint64_t* context, uint64_t size) {
+uint64_t* allocate_memory_deleted(uint64_t* context, uint64_t size) {
   return allocate_memory_selfie(context, size);
 }
 
@@ -11122,7 +11122,7 @@ uint64_t* get_metadata_if_address_is_valid(uint64_t* context, uint64_t address) 
   return (uint64_t*) 0;
 }
 
-void mark_block(uint64_t* context, uint64_t address) {
+void mark_block_deleted(uint64_t* context, uint64_t address) {
   uint64_t gc_address;
 
   gc_address = gc_load_memory(context, address);
@@ -11207,7 +11207,7 @@ void free_block(uint64_t* context, uint64_t* metadata, uint64_t* prev_metadata) 
   gc_mem_collected = gc_mem_collected + get_metadata_size(metadata);
 }
 
-void sweep(uint64_t* context) {
+void sweep_deleted(uint64_t* context) {
   sweep_selfie(context);
 }
 
@@ -12506,4 +12506,3 @@ int main(int argc, char** argv) {
 
   return exit_selfie(exit_code, " [ ( -m | -d | -r | -y ) 0-4096 ... ]");
 }
-
