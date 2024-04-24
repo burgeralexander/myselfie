@@ -40,6 +40,7 @@ The parameter `imm` denotes a signed integer value represented by a fixed number
 
 `mul rd,rs1,rs2`: `rd = rs1 * rs2; pc = pc + 4`
 
+<<<<<<< HEAD
 `shl rd,rs1,rs2`: `rd = rs1 + rs2; pc = pc + 4`
 
 `shr rd,rs1,rs2`: `rd = rs1 + rs2; pc = pc + 4`
@@ -50,6 +51,8 @@ The parameter `imm` denotes a signed integer value represented by a fixed number
 
 `xori rd,rs1,imm`: `rd = ~(rs1 + imm); pc = pc + 4`
 
+=======
+>>>>>>> parent of b548c432 (Assignment 3)
 `divu rd,rs1,rs2`: `rd = rs1 / rs2; pc = pc + 4` where the values of `rs1` and `rs2` are interpreted as unsigned integers.
 
 `remu rd,rs1,rs2`: `rd = rs1 % rs2; pc = pc + 4` where the values of `rs1` and `rs2` are interpreted as unsigned integers.
