@@ -10,7 +10,7 @@ C\* is a tiny subset of the programming language C. C\* features global variable
 
 C\* Keywords: `uint64_t`, `void`, `sizeof`, `if`, `else`, `while`, `return`, `for` 
 
-C\* Symbols: `integer`, `character`, `string`, `identifier`, `,`, `;`, `(`, `)`, `{`, `}`, `+`, `-`, `*`, `/`, `%`, `=`, `==`, `!=`, `<`, `>`, `<=`, `>=`, `<<`, `>>`, `&`, `|`, `~`, `...`, `&&`, `||`, `!`
+C\* Symbols: `integer`, `character`, `string`, `identifier`, `,`, `;`, `(`, `)`, `{`, `}`, `[`, `]` `+`, `-`, `*`, `/`, `%`, `=`, `==`, `!=`, `<`, `>`, `<=`, `>=`, `<<`, `>>`, `&`, `|`, `~`, `...`, `&&`, `||`, `!`
 
 with:
 
@@ -39,7 +39,7 @@ hex_letter = "A" | "B" | "C" | "D" | "E" | "F" | "a" | "b" | "c" | "d" | "e" | "
 C\* Grammar:
 
 ```
-cstar      = { variable [ initialize ] ";" | procedure } .
+cstar      = { identifier "[" literal "]" | variable [ initialize ] ";" | procedure } .
 
 variable   = type identifier .
 
