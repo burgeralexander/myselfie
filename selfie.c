@@ -473,13 +473,14 @@ uint64_t SYM_LOG_NOT      = 37; // !
 uint64_t SYM_FOR          = 38; // for
 uint64_t SYM_LBRACKET	  = 39; // [
 uint64_t SYM_RBRACKET	  = 40; // ]
+uint64_t SYM_STRUCT       = 41;
 
 // symbols for bootstrapping
 
-uint64_t SYM_INT      = 41; // int
-uint64_t SYM_CHAR     = 42; // char
-uint64_t SYM_UNSIGNED = 43; // unsigned
-uint64_t SYM_CONST    = 44; // const
+uint64_t SYM_INT      = 42; // int
+uint64_t SYM_CHAR     = 43; // char
+uint64_t SYM_UNSIGNED = 44; // unsigned
+uint64_t SYM_CONST    = 45; // const
 
 uint64_t* SYMBOLS; // strings representing symbols
 
@@ -560,6 +561,7 @@ void init_scanner () {
   *(SYMBOLS + SYM_FOR)          = (uint64_t) "for";
   *(SYMBOLS + SYM_LBRACKET)     = (uint64_t) "[";
   *(SYMBOLS + SYM_RBRACKET)     = (uint64_t) "]";
+  *(SYMBOLS + SYM_STRUCT)       = (uint64_t) "struct";
   
   *(SYMBOLS + SYM_INT)      = (uint64_t) "int";
   *(SYMBOLS + SYM_CHAR)     = (uint64_t) "char";
@@ -3814,6 +3816,8 @@ uint64_t identifier_or_keyword() {
     return SYM_FOR;
   else if (identifier_string_match(SYM_SIZEOF))
     return SYM_SIZEOF;
+  else if (identifier_string_match(SYM_STRUCT)) 
+    return SYM_STRUCT;
   else if (identifier_string_match(SYM_INT))
     // selfie bootstraps int to uint64_t!
     return SYM_UINT64;
@@ -4511,6 +4515,8 @@ uint64_t is_neither_type_nor_void() {
     return 0;
   else if (symbol == SYM_EOF)
     return 0;
+  else if (symbol == SYM_STRUCT)
+    return 0;
   else
     return 1;
 }
@@ -4692,6 +4698,26 @@ void compile_cstar() {
         compile_procedure(variable_or_procedure, type);
       } else
         syntax_error_expected_symbol(SYM_IDENTIFIER);
+    } else if (symbol == SYM_STRUCT) {
+      get_symbol();
+      
+      if (symbol == SYM_IDENTIFIER) {
+        get_symbol();
+        
+        if (symbol == SYM_LBRACE) {
+          get_symbol();
+          
+          if (symbol == SYM_RBRACE) {
+            get_symbol();
+            
+          }
+            
+          if (symbol == SYM_SEMICOLON) {
+            get_symbol();
+            
+          }
+        }
+      }
     } else
       syntax_error_unexpected_symbol();
   }
