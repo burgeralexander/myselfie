@@ -12933,7 +12933,8 @@ int main(int argc, char** argv) {
   init_kernel();
   
   printf("%s: This is Alexander Burger's Selfie!", selfie_name);
-
+  printf("%s: Kein Bock auf Selfie!", selfie_name);
+  
   exit_code = selfie(0);
 
   return exit_selfie(exit_code, " [ ( -m | -d | -r | -y ) 0-4096 ... ]");
